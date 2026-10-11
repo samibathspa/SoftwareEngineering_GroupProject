@@ -4,16 +4,20 @@ A desktop password manager for Windows with a graphical login window and an encr
 
 ## Features
 
-- Graphical window (Windows API) with **Log In**, **Log Out** and **Recover Password** buttons
-- Master-password protection. The first Log In creates a new vault, and later Log Ins unlock it
+- Graphical window (Windows API) with **Create Account**, **Log In**, **Log Out** and **Recover Password** actions
+- **Create Account** setup asks for a strong master password and confirmation; the app currently supports one account per local vault
+- Master-password protection. Log Ins unlock the existing vault
 - Master password rules: at least 12 characters, with at least one uppercase letter, one lowercase letter, one number and one special character. A message explains which rule failed
 - **Show password** checkbox on the password field
 - **Light Mode / Dark Mode** toggle button
+- Compact login window that expands to a smaller credential workspace after login
 - **Recover Password** explains that the master password cannot be recovered (it is never stored) and offers to reset the vault after two confirmations. Resetting permanently deletes all saved credentials
 - Encrypted local vault file (`vault.dat`)
   - PBKDF2-HMAC-SHA256 key derivation (100,000 iterations)
   - AES-256-CBC encryption (random IV prepended)
-- Stored credentials are listed in the window after logging in
+- Logged-in credential workspace with actions to list, add, edit, delete, search by service, and view saved credentials
+- Strong random password generator in the add/edit credential form, with an option to reveal the generated password
+- **Exit** button in the logged-in workspace
 - Secure wipe of sensitive buffers where practical
 
 ## Requirements
@@ -52,7 +56,7 @@ From the same MSYS2 UCRT64 terminal, inside the `build` folder:
 ./password_manager.exe
 ```
 
-On first launch there is no vault yet. Enter a master password that meets the rules and click **Log In** to create `vault.dat` in the current folder. On later launches, enter the same password to unlock it.
+On first launch there is no vault yet. Choose **Create Account**, enter a master password that meets the rules, and confirm it to create `vault.dat` in the current folder. On later launches, enter the same password to unlock the vault.
 
 Note: double-clicking `password_manager.exe` in File Explorer can fail with a missing DLL error (for example `libcrypto-3-x64.dll`), because Windows cannot find the MSYS2 libraries. Running it from the UCRT64 terminal avoids this.
 
@@ -73,7 +77,6 @@ Note: double-clicking `password_manager.exe` in File Explorer can fail with a mi
 
 ## Known limitations
 
-- The window currently supports logging in, logging out, resetting the vault and listing stored credentials. Adding, editing and deleting credentials is implemented in the vault code (`vault.hpp` / `vault.cpp`) but does not yet have buttons in the window.
 - Windows only.
 
 ## Security notes (student-project scope)
